@@ -1,0 +1,86 @@
+.homepage_main_container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    color: rgb(236, 223, 223);
+    gap: 1rem;
+    background-color: rgb(181, 167, 167);
+    height: 100vh;
+}
+
+.user_list_container{
+    background-color: rgb(31, 29, 57);
+    margin: 15px;
+    padding: 10px 20px;
+    border-radius: 15px;
+    margin-top: 7rem;
+    height: 77.5vh;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    
+}
+
+.user_container{
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(236, 223, 223);
+    color: rgb(31, 29, 57);
+    border-radius: 15px;
+    padding: 0px 15px;
+    font-size: large;
+}
+
+.logout_btn_container{
+    position: absolute;
+    padding: 0px 25px;
+    font-size: medium;
+    background-color: rgb(28, 23, 23);
+    color: white;
+    top: 5%;
+    right: 22%;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ==========Media  Queries (medium devices) =============*/
+
+@media screen and (max-width: 1024px) {
+    .homepage_main_container{
+        display: flex;
+        flex-direction: column;        
+        height: 100vh;
+        gap: 0rem;
+    }
+    
+    .user_list_container{
+        margin-top: 1rem;     
+    }
+    
+    .logout_btn_container{
+        top: 4%;
+        right: 34%;
+    }
+ }
+ 
+ /* ==========Media  Queries (small devices) =============*/
+ 
+ @media screen and (max-width: 600px) {
+    .logout_btn_container > p{
+       display: none;
+    }
+    .logout_btn_container{
+        padding: 12px 15px;
+        right: 30%;
+        top: 4.5%;
+    }
+    .homepage_main_container{
+        height: fit-content;
+    }
+ }
