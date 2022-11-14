@@ -1,4 +1,4 @@
-const userModel = require("../model/model");
+const userModel = require("../model/userModel");
 const handleErrors = require("../utils/errorHandler");
 const otpGenerator = require('otp-generator');
 const fast2sms = require('fast-two-sms');
@@ -31,7 +31,6 @@ const login = async (req, res) => {
     }
 }
 
-
 const sendOTP = async (req, res) => {
     try {
         if (!req.body.number || req.body.number.toString().length !== 10) throw new Error("Invalid number");
@@ -63,31 +62,40 @@ const sendOTP = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         if (req.body.number && req.body.number.toString().length !== 10) throw new Error("Invalid number");
-        req.body.number = parseInt(req.body.number);
+        if (req.body.number) req.body.number = parseInt(req.body.number);
         if (req.body.isDeleted) {
             req.body.deletedAt = new Date(Date.now()).toISOString();
         }
+        //todo hash password before updating
         if (req.body.password) {
             const salt = await bcrypt.genSalt(10);
             req.body.password = await bcrypt.hash(req.body.password, salt);
         }
-        const updatedUser = await userModel.findByIdAndUpdate(req.params.userId, { $set: req.body }, { new: true });
+        let updatedUser;
+
+        //todo if req.body.product is true then add product from favourites
+        if (req.body.productId && req.body.product) {
+            updatedUser = await userModel.findByIdAndUpdate(req.params.userId, { $set: req.body, $addToSet: { favourites: { productId: req.body.productId } } }, { new: true });
+            //todo if req.body.product is false then remove product from favourites
+        } else if (req.body.productId && !req.body.product) {
+            updatedUser = await userModel.findByIdAndUpdate(req.params.userId, { $set: req.body, $pull: { favourites: { productId: req.body.productId } } }, { new: true });
+        } else {
+            updatedUser = await userModel.findByIdAndUpdate(req.params.userId, { $set: req.body }, { new: true });
+        }
+
         res.status(200).send({ status: true, data: updatedUser });
     } catch (error) {
         if (error.code === 11000) {
             error.message = `${Object.keys(error.keyValue)[0]} is not available`;
         }
+        console.error;
         res.status(400).send({ status: false, message: error.message });
     }
 }
 
-const getUsers = async (req, res) => {
-    try {
-        const users = await userModel.find({ isDeleted: false });
-        res.status(200).send({ status: true, count: users.length, data: users });
-    } catch (error) {
-        res.status(400).send({ status: false, message: error.message });
-    }
+const getFavourites = async (req, res) => {
+    const user = await userModel.findOne({ _id: req.params.userId, isDeleted: false }).select('favourites').populate('favourites.productId');
+    res.status(200).send({ status: true, data: user });
 }
 
 const userProfile = async (req, res) => {
@@ -101,4 +109,4 @@ const userProfile = async (req, res) => {
 
 
 
-module.exports = { registerUser, login, updateUser, sendOTP, getUsers, userProfile };
+module.exports = { registerUser, login, updateUser, sendOTP, getFavourites, userProfile };

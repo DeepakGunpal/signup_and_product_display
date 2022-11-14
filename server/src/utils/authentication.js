@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const otpModel = require('../model/otpModel');
-const userModel = require("../model/model");
+const userModel = require("../model/userModel");
 require('dotenv/config');
 
 //todo check whether user is registered or not

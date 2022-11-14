@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './UserDetails.css';
 import Cookies from 'js-cookie';
 import { axiosInstance } from '../../config';
@@ -36,21 +36,24 @@ const UserDetails = ({ setLoginUser }) => {
     const handleChange = ({ target: { name, value } }) => {
         setUserUpdates({ ...userUpdates, [name]: value })
     };
-    const users = async () => {
-        const res = await axiosInstance.get(`/profile/${loggedInUser}`, { headers: { Token: Cookies.get('jwt') } })
-            .catch((err) => {
-                window.alert(err.response.data.message);
-                Cookies.remove('user');
-                Cookies.remove('jwt');
-                setLoginUser(null);
-                navigate('/');
-            })
-        if (res && res.status === 200) setUserUpdates(res.data.data);
-    }
+    const users = useCallback(
+        async () => {
+            const res = await axiosInstance.get(`/profile/${loggedInUser}`, { headers: { Token: Cookies.get('jwt') } })
+                .catch((err) => {
+                    window.alert(err.response.data.message);
+                    Cookies.remove('user');
+                    Cookies.remove('jwt');
+                    setLoginUser(null);
+                    navigate('/');
+                })
+            if (res && res.status === 200) setUserUpdates(res.data.data);
+
+        }, [loggedInUser, navigate, setLoginUser],
+    )
 
     useEffect(() => {
         users()
-    }, [loggedInUser])
+    }, [loggedInUser, users])
 
     const style = {
         color: 'red',

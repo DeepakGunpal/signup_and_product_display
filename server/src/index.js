@@ -10,14 +10,22 @@ const numCPUs = os.cpus().length;
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const path = require('path');
 
-app.use(cors({
-    origin: ['https://637000d17145a92704d73c67--jovial-dusk-16c550.netlify.app', 'http://localhost:3000']
-}));
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api', route)
+
+if (process.env.NODE_ENV == "production") {
+
+    app.use(express.static(process.cwd(), '../client', 'build', 'index.html'));
+
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(process.cwd(), '../client', 'build', 'index.html'));
+    })
+}
 
 mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true })
     .then(() => console.log('db connection established'));

@@ -1,0 +1,29 @@
+
+
+.add_flight_button{
+    position: absolute;
+    top: 16%;
+    right: 4%;
+}
+
+/* ==========Media  Queries (medium devices) =============*/
+
+@media screen and (max-width: 1024px) {
+    .add_flight_button{
+        position: static;
+        display: flex;
+        justify-content: center;
+        margin: 1%;
+    }
+
+}
+
+/* ==========Media  Queries (small devices) =============*/
+
+@media screen and (max-width: 600px) {
+    .add_flight_button{
+        position: static;
+        margin: 4% 22%;
+    }
+}
+

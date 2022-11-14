@@ -3,6 +3,7 @@ import './DefaultPage.css'
 import { Link } from 'react-router-dom';
 
 const DefaultPage = () => {
+   
     const style = {
         backgroundColor: 'rgb(181, 167, 167)',
         color: 'black',

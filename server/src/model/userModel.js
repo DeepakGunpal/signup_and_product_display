@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema({
     number: { type: Number, unique: true, trim: true, required: true },
     email: { type: String, trim: true, lowercase: true, unique: true, required: [true, "email is mandatory"] },
     password: { type: String, required: [true, "password is mandatory"] },
+    favourites: [{
+        productId: { type: mongoose.Schema.Types.ObjectId, ref: 'product' },
+        _id: false
+    }],
     isDeleted: { type: String, default: false },
     deletedAt: { type: Date, default: null }
 }, { timestamps: true });
@@ -35,7 +39,7 @@ userSchema.statics.generateToken = async function (user) {
     const token = jwt.sign({
         _id: user._id,
         email: user.email
-    }, process.env.JWT_Secret_key, { algorithm: 'HS256', expiresIn: '10m' });
+    }, process.env.JWT_Secret_key, { algorithm: 'HS256', expiresIn: '1d' });
     return token;
 }
 
