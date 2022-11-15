@@ -14,7 +14,6 @@ export default function CustomizedSnackbars({ alert, setAlert, alertMsg }) {
         }
         setAlert(false);
     };
-    console.log(alertMsg.split(":")[0])
     return (
         <Stack spacing={1} sx={{ width: '50%' }}>
             <Snackbar open={alert} autoHideDuration={2000} onClose={handleClose}>

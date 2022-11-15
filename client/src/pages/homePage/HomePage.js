@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
 import { axiosInstance } from '../../config';
 import { CgLogOut } from 'react-icons/cg';
-import { MdDelete, MdFavorite } from 'react-icons/md';
 import UserDetails from '../../components/userDetails/UserDetails';
-import { IconButton } from '@mui/material';
 import AddProduct from '../../components/addProduct/AddProduct';
 import CustomizedSnackbars from '../../components/Snackbar';
 import BasicPagination from '../../components/Pagination';
+import Products from '../../components/products/Products';
+import Favourites from '../../components/favourites/Favourites';
 
 const HomePage = ({ setLoginUser }) => {
-  const [productList, setProductList] = useState([]); //todo productList
-  const [favList, setFavList] = useState([]); //todo fav productList
   const [favorite, setFavorite] = useState(false); //todo switch tabs
   const [alert, setAlert] = useState(false); //todo show alert message
   const [alertMsg, setAlertMsg] = useState(''); //todo alert message
   const [currentPage, setCurrentPage] = useState(1); //todo pagination
-  const [recordsPerPage] = useState(4); //todo recordsPerPage
+  const [nPages, setnPages] = useState(1); //todo pagination
   const navigate = useNavigate();
   //todo logout and remove cookies
   const logout = () => {
@@ -27,29 +25,6 @@ const HomePage = ({ setLoginUser }) => {
     setLoginUser(null);
     navigate('/');
   }
-  //todo fetch favorite products
-  const fav = async () => {
-    const res = await axiosInstance.get(`/getFavourites/${Cookies.get('user')}`)
-      .catch((err) => {
-        setAlertMsg("error: " + err.response.data.message);
-      })
-    if (res && res.status === 200) setFavList(res.data.data.favourites);
-  }
-
-  //todo fetch all products
-  const products = async () => {
-    const res = await axiosInstance.get(`/getProducts`)
-      .catch((err) => {
-        setAlertMsg("error: " + err.response.data.message);
-      })
-    if (res && res.status === 200) setProductList(res.data.data);
-  }
-
-  //todo pagination
-  const indexOfLastRecord = currentPage * recordsPerPage;
-  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-  const currentRecords = productList.slice(indexOfFirstRecord, indexOfLastRecord);
-  const nPages = Math.ceil(productList.length / recordsPerPage)
 
   //todo switch tabs
   const favTab = () => setFavorite(true);
@@ -71,47 +46,20 @@ const HomePage = ({ setLoginUser }) => {
     };
   }
 
-  useEffect(() => {
-    products();
-    fav();
-  }, [favorite])
-
   return (
     <div className='homepage_main_container'>
       <UserDetails setLoginUser={setLoginUser} />
-      <div className='user_list_container'>
+      <div className='product_list_container'>
         <CustomizedSnackbars alert={alert} setAlert={setAlert} alertMsg={alertMsg} setAlertMsg={setAlertMsg} />
-        <BasicPagination nPages={nPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <BasicPagination nPages={nPages} setnPages={setnPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
         <div className='product_container'>
           <h3 onClick={productTab}>Products</h3>
           <h3 onClick={favTab}>Favourites</h3>
         </div>
         {/* //todo show product list */}
-        {
-          !favorite && currentRecords && currentRecords.map((product, i) => (
-            <div key={i} className='product_container'>
-              <h4>{product.title}</h4>
-              <h4>{product.price}</h4>
-              <h5>{product.status}</h5>
-              <IconButton aria-label="add" onClick={() => addFav(product._id, true)}>
-                <MdFavorite />
-              </IconButton>
-            </div>
-          ))
-        }
+        {!favorite && <Products addFav={addFav} favorite={favorite} setAlert={setAlert} setAlertMsg={setAlertMsg} currentPage={currentPage} nPages={nPages} setnPages={setnPages} />}
         {/* //todo show favorite product list */}
-        {
-          favorite && favList && favList.map((product, i) => (
-            <div key={i} className='product_container'>
-              <h4>{product.productId.title}</h4>
-              <h4>{product.productId.price}</h4>
-              <h5>{product.productId.status}</h5>
-              <IconButton aria-label="delete" onClick={() => addFav(product.productId._id, false)}>
-                <MdDelete />
-              </IconButton>
-            </div>
-          ))
-        }
+        {favorite && <Favourites addFav={addFav} favorite={favorite} setAlert={setAlert} setAlertMsg={setAlertMsg} currentPage={currentPage} nPages={nPages} setnPages={setnPages} />}
       </div>
       <button onClick={logout} className='logout_btn_container'>{<CgLogOut size='30px' />} <p>Logout</p> </button>
       <AddProduct alert={alert} setAlert={setAlert} alertMsg={alertMsg} setAlertMsg={setAlertMsg} />

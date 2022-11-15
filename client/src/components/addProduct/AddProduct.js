@@ -17,7 +17,8 @@ export default function AddProduct({ alert, setAlert, alertMsg, setAlertMsg }) {
 
     const [newProductDetails, setNewProductDetails] = useState({
         title: "",
-        price: ""
+        price: "",
+        status: ""
     });
 
     const handleClickOpen = () => {
@@ -50,13 +51,12 @@ export default function AddProduct({ alert, setAlert, alertMsg, setAlertMsg }) {
     const handleInput = ({ target: { name, value } }) => {
         setNewProductDetails({ ...newProductDetails, [name]: value })
     };
-
     return (
         <div className='add_Product_button'>
             <button
                 onClick={handleClickOpen}
                 className='add_product_btn_container'>
-                {<MdAddBox size='30px' />} <p>Add Product</p>
+                {<MdAddBox size='30px' />} <span>Add Product</span>
             </button>
             <Dialog open={open} onClose={handleClose}>
                 <DialogActions>
@@ -95,6 +95,22 @@ export default function AddProduct({ alert, setAlert, alertMsg, setAlertMsg }) {
                             autoComplete='off'
                             required
                         />
+                        <TextField
+                            autoFocus
+                            select
+                            margin="dense"
+                            id="name"
+                            onChange={handleInput}
+                            label="Status"
+                            name='status'
+                            value={newProductDetails.status}
+                            variant="outlined"
+                            autoComplete='off'
+                            SelectProps={{ native: true }}
+                        >
+                            <option key='Availabe' value="Availabe">Available</option>
+                            <option key='Out Of Stock' value="Out Of Stock">Out of Stock</option>
+                        </TextField>
                     </div>
                 </DialogContent>
                 <DialogActions>

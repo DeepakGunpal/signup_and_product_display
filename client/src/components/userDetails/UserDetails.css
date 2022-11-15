@@ -4,9 +4,7 @@
     padding: 10px;
     border-radius: 15px;
     margin-top: 7rem;
-    height: 77.5vh;
-    /* overflow-y: scroll; */
-    /* scroll-behavior: smooth;    */
+    height: 72vh;
     display: flex;
     justify-content: center;
 }
