@@ -9,13 +9,16 @@ import UserDetails from '../../components/userDetails/UserDetails';
 import { IconButton } from '@mui/material';
 import AddProduct from '../../components/addProduct/AddProduct';
 import CustomizedSnackbars from '../../components/Snackbar';
+import BasicPagination from '../../components/Pagination';
 
 const HomePage = ({ setLoginUser }) => {
-  const [productList, setProductList] = useState([]);
-  const [favList, setFavList] = useState([]);
-  const [favorite, setFavorite] = useState(false);
-  const [alert, setAlert] = useState(false);
-  const [alertMsg, setAlertMsg] = useState('');
+  const [productList, setProductList] = useState([]); //todo productList
+  const [favList, setFavList] = useState([]); //todo fav productList
+  const [favorite, setFavorite] = useState(false); //todo switch tabs
+  const [alert, setAlert] = useState(false); //todo show alert message
+  const [alertMsg, setAlertMsg] = useState(''); //todo alert message
+  const [currentPage, setCurrentPage] = useState(1); //todo pagination
+  const [recordsPerPage] = useState(4); //todo recordsPerPage
   const navigate = useNavigate();
   //todo logout and remove cookies
   const logout = () => {
@@ -41,6 +44,12 @@ const HomePage = ({ setLoginUser }) => {
       })
     if (res && res.status === 200) setProductList(res.data.data);
   }
+
+  //todo pagination
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = productList.slice(indexOfFirstRecord, indexOfLastRecord);
+  const nPages = Math.ceil(productList.length / recordsPerPage)
 
   //todo switch tabs
   const favTab = () => setFavorite(true);
@@ -72,13 +81,14 @@ const HomePage = ({ setLoginUser }) => {
       <UserDetails setLoginUser={setLoginUser} />
       <div className='user_list_container'>
         <CustomizedSnackbars alert={alert} setAlert={setAlert} alertMsg={alertMsg} setAlertMsg={setAlertMsg} />
+        <BasicPagination nPages={nPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
         <div className='product_container'>
           <h3 onClick={productTab}>Products</h3>
           <h3 onClick={favTab}>Favourites</h3>
         </div>
         {/* //todo show product list */}
         {
-          !favorite && productList && productList.map((product, i) => (
+          !favorite && currentRecords && currentRecords.map((product, i) => (
             <div key={i} className='product_container'>
               <h4>{product.title}</h4>
               <h4>{product.price}</h4>

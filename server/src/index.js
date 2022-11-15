@@ -6,11 +6,11 @@ require('dotenv/config');
 const cluster = require("cluster");
 const os = require("os");
 const numCPUs = os.cpus().length;
-
+const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const path = require('path');
-
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
