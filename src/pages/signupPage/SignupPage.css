@@ -1,0 +1,37 @@
+.signup_form_container{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(28, 23, 23);
+    color: wheat;
+    flex-direction: column;
+}
+
+.signup_form{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 10px;
+    padding: 20px;
+    background-color: rgb(181, 167, 167);
+    border-radius: 10px;
+    gap: 1rem;
+}
+
+.signup_button_container{
+    grid-column-start: 1;   
+    grid-column-end: 3;
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+}
+
+.signup_form > p{
+    text-align: center;
+    grid-column-start: 1;   
+    grid-column-end: 3;
+    color: rgb(31, 29, 57);
+    cursor: pointer;
+    font-weight: 600;
+}

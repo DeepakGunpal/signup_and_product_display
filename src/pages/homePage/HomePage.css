@@ -1,0 +1,122 @@
+.homepage_main_container{
+    display: grid;
+    grid-template-columns: 0.8fr 1fr;
+    color: rgb(236, 223, 223);
+    gap: 0.5rem;
+    background-color: rgb(181, 167, 167);
+    height: 100vh;
+    width: 100vw;
+    overflow-y: scroll;
+}
+
+.product_list_container{
+    background-color: rgb(28, 23, 23);
+    margin: 15px;
+    margin-right: 30px;
+    padding: 10px 20px;
+    border-radius: 15px;
+    margin-top: 7rem;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.product_container{
+    display: flex;
+    gap: 1rem;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgb(236, 223, 223);
+    color: rgb(31, 29, 57);
+    border-radius: 15px;
+    padding: 0px 15px;
+    font-size: large;
+    text-transform: capitalize;
+}
+
+.product_container > h3{
+    cursor: pointer;
+    background-color: rgb(28, 23, 23);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+}
+
+.logout_btn_container{
+    position: absolute;
+    padding: 0px 25px;
+    font-size: medium;
+    background-color: rgb(28, 23, 23);
+    color: white;
+    top: 5%;
+    right: 22%;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add_product_btn_container{
+    position: absolute;
+    padding: 10px 25px;
+    font-size: medium;
+    background-color: rgb(28, 23, 23);
+    color: white;
+    top: 5%;
+    right: 34%;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ==========Media  Queries (medium devices) =============*/
+
+@media screen and (max-width: 1024px) {
+    .homepage_main_container{
+        display: flex;
+        flex-direction: column;        
+        height: 100vh;
+        gap: 0rem;
+    }
+    
+    .product_list_container{
+        margin-top: 1rem;     
+    }
+    
+    .logout_btn_container{
+        top: 4%;
+        right: 34%;
+    }
+    .add_product_btn_container{
+        top: 4%;
+        right: 54%;
+    }
+ }
+ 
+ /* ==========Media  Queries (small devices) =============*/
+ 
+ @media screen and (max-width: 600px) {
+    .logout_btn_container > p{
+       display: none;
+    }
+    .logout_btn_container{
+        padding: 12px 15px;
+        right: 12%;
+        top: 4.5%;
+    }
+    .add_product_btn_container > span{
+       display: none;
+    }
+    .add_product_btn_container{
+        padding: 12px 15px;
+        right: 42%;
+        top: 4.5%;
+    }
+    .homepage_main_container{
+        height: fit-content;
+    }
+ }
