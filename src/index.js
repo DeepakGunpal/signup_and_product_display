@@ -5,20 +5,18 @@ const route = require('./route');
 require('dotenv/config');
 const cluster = require("cluster");
 const os = require("os");
+const cors = require("cors");
 const numCPUs = os.cpus().length;
 const app = express();
 const PORT = process.env.PORT || 5000;
-const path = require('path');
+
+app.use(cors({
+    origin:"*"
+}))
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api', route)
-
-
-app.use(express.static('client/build'));
-app.get("*", (req, res) => {
-    res.sendFile(path.resolve(process.cwd(), 'client', 'build', 'index.html'));
-})
 
 mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true })
     .then(() => console.log('db connection established'));
